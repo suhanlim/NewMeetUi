@@ -3,7 +3,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Navbar />
-      <div className="">{children}</div>
+      <div className="bg-sky-50">{children}</div>
     </>
   );
 }

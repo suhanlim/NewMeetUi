@@ -2,12 +2,16 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import clsx from "clsx";
+import { usePathname } from "next/navigation";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 export function Navbar() {
+  const pathname = usePathname();
   return (
     <Disclosure as="nav" className="bg-white shadow">
       {({ open }) => (
@@ -28,26 +32,40 @@ export function Navbar() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    alt="Your Company"
-                  />
+                  <Link href="/">
+                    <img
+                      className="h-8 w-auto"
+                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                      alt="Your Company"
+                    />
+                  </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                   {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
-                  <a
+                  <Link
                     href="/content/group"
-                    className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                    className={clsx(
+                      "inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700",
+                      {
+                        "border-indigo-500 border-b-2 text-gray-900":
+                          pathname === "/content/group",
+                      },
+                    )}
                   >
                     Group
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="/content/calendarlist"
-                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    className={clsx(
+                      "inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700",
+                      {
+                        "border-indigo-500 border-b-2 text-gray-900":
+                          pathname === "/content/calendarlist",
+                      },
+                    )}
                   >
                     Calendars
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">

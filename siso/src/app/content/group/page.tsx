@@ -1,11 +1,14 @@
 import { Chat } from "@/components/Chat";
 import { GroupCalendar } from "@/components/GroupCalendar";
+import { Provider } from "jotai";
 
 export default function Page() {
   return (
-    <div className="flex flex-row gap-2">
-      <Chat />
-      <GroupCalendar />
-    </div>
+    <Provider>
+      <div className="flex flex-row gap-2">
+        <Chat />
+        <GroupCalendar />
+      </div>
+    </Provider>
   );
 }

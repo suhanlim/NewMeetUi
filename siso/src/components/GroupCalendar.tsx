@@ -9,6 +9,8 @@ import {
 } from "@heroicons/react/20/solid";
 import { Menu, Transition } from "@headlessui/react";
 import { Modal } from "./Modal";
+import { useAtom } from "jotai";
+import { modalOpenedAtom } from "@/app/Stores";
 
 const days = [
   { date: "2021-12-27", events: [] },
@@ -136,6 +138,7 @@ function classNames(...classes: string[]) {
 }
 
 export function GroupCalendar() {
+  const [modalOpen, setOpen] = useAtom(modalOpenedAtom);
   return (
     <div className="lg:flex lg:h-full lg:flex-col bg-sky-50">
       <header className="flex items-center justify-between border-b border-gray-200 px-6 py-4 lg:flex-none">
@@ -258,6 +261,7 @@ export function GroupCalendar() {
 
             <button
               type="button"
+              onClick={() => setOpen(!modalOpen)}
               className="ml-6 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Add event

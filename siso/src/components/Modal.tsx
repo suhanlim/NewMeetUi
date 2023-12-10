@@ -2,10 +2,10 @@ import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { useAtom } from "jotai";
-import { openAtom } from "@/app/Stores";
+import { modalOpenedAtom } from "@/app/Stores";
 
 export function Modal() {
-  const [open, setOpen] = useAtom(openAtom);
+  const [open, setOpen] = useAtom(modalOpenedAtom);
 
   const cancelButtonRef = useRef(null);
 

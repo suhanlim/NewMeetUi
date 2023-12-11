@@ -5,20 +5,48 @@ import {
   CheckIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
-import { useAtom } from "jotai";
-import { useAtomValue } from "jotai";
-import { modalOpenedAtom } from "@/app/Stores";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { daysAtom, modalOpenedAtom } from "@/app/Stores";
 import { DateInput } from "./DateInput";
 import { inputDateAtom, inputTextAtom } from "@/app/Stores";
+import { Event, Day } from "..";
 
 export function Modal() {
   const [open, setOpen] = useAtom(modalOpenedAtom);
+  const [days, setDays] = useAtom(daysAtom);
   const [inputResult, setInputResult] = useState(true);
   const cancelButtonRef = useRef(null);
   const textValue = useAtomValue(inputTextAtom);
   const dateValue = useAtomValue(inputDateAtom);
+  let idValue = 20;
+  const inputDate = () => {
+    const tIndex: number = dateValue.indexOf("T");
+    const keyDate: string = dateValue.substring(0, tIndex);
+    const event: Event = {
+      id: idValue++,
+      name: textValue,
+      time: +dateValue.substring(tIndex + 1, tIndex + 3) + "PM",
+      datetime: dateValue,
+      href: "#",
+    };
+    const dayIndex = days.findIndex(({ date }) => date === keyDate);
+    if (dayIndex !== -1) {
+      days[dayIndex].events.push(event);
+      setDays(days);
+    } else {
+      const newDay: Day = {
+        date: keyDate,
+        isCurrentMonth: false,
+        isToday: false,
+        isSelected: false,
+        events: new Array(event),
+      };
+      days.push(newDay);
+    }
+  };
   const inputCheck = () => {
     if (textValue != "" && dateValue != "") {
+      inputDate();
       setOpen(false);
       setInputResult(true);
     } else setInputResult(false);

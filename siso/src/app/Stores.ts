@@ -1,22 +1,9 @@
 import { atom } from "jotai";
+import { Day } from "..";
 
 export const modalOpenedAtom = atom(false);
 export const inputTextAtom = atom("");
 export const inputDateAtom = atom("");
-interface Event {
-  id: number;
-  name: string;
-  time: string;
-  datetime: string;
-  href: string;
-}
-interface Day {
-  date: string;
-  isCurrentMonth?: boolean | null; // Allow null for isCurrentMonth
-  isToday?: boolean; // Optional property isToday
-  isSelected?: boolean; // Optional property isSelected
-  events: Event[];
-}
 const days = [
   { date: "2021-12-27", events: [] },
   { date: "2021-12-28", events: [] },

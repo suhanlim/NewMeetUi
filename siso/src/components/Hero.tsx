@@ -54,7 +54,7 @@ export function Hero() {
             <p className="break-keep mt-4 text-3xl text-slate-600">
               일상에서 느껴지는 약속 잡기 피로감, 약속을 잡은 후 약속 장소 찾기
             </p>
-            <div className="mt-8 flex gap-4">
+            <div className="mt-8 flex gap-4 pb-6">
               <Button href="/content/group" color="blue">
                 Go Service
               </Button>

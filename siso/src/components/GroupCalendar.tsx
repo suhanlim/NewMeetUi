@@ -11,14 +11,32 @@ import { Modal } from "./Modal";
 import { useAtom } from "jotai";
 import { daysAtom, modalOpenedAtom } from "@/app/Stores";
 import { MouthView } from "./Calender/MouthView";
+import { WeekView } from "./Calender/WeekView";
+import { DayView } from "./Calender/DayView";
+import { YearView } from "./Calender/YearView";
+import { Calendar } from "./Calendar";
+const CalenderSelector = (selectIndex: number) => {
+  switch (selectIndex) {
+    case 0:
+      return <MouthView />;
+    case 1:
+      return <WeekView />;
+    case 2:
+      return <DayView />;
+    case 3:
+      return <YearView />;
+  }
+};
 
 export function GroupCalendar() {
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
   }
   const [modalOpen, setOpen] = useAtom(modalOpenedAtom);
+  const [selectIndex, setSelectIndex] = useState(0);
 
   return (
+    // <div className="flex h-full flex-col">
     <div className="lg:flex lg:h-full lg:flex-col bg-sky-50">
       <Modal />
       <header className="flex items-center justify-between border-b border-gray-200 px-6 py-4 lg:flex-none">
@@ -77,6 +95,7 @@ export function GroupCalendar() {
                       {({ active }) => (
                         <a
                           href="#"
+                          onClick={() => setSelectIndex(2)}
                           className={classNames(
                             active
                               ? "bg-gray-100 text-gray-900"
@@ -92,6 +111,7 @@ export function GroupCalendar() {
                       {({ active }) => (
                         <a
                           href="#"
+                          onClick={() => setSelectIndex(1)}
                           className={classNames(
                             active
                               ? "bg-gray-100 text-gray-900"
@@ -107,6 +127,7 @@ export function GroupCalendar() {
                       {({ active }) => (
                         <a
                           href="#"
+                          onClick={() => setSelectIndex(0)}
                           className={classNames(
                             active
                               ? "bg-gray-100 text-gray-900"
@@ -122,6 +143,7 @@ export function GroupCalendar() {
                       {({ active }) => (
                         <a
                           href="#"
+                          onClick={() => setSelectIndex(3)}
                           className={classNames(
                             active
                               ? "bg-gray-100 text-gray-900"
@@ -264,7 +286,7 @@ export function GroupCalendar() {
           </Menu>
         </div>
       </header>
-      <MouthView />
+      {CalenderSelector(selectIndex)}
     </div>
   );
 }

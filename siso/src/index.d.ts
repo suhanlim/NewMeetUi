@@ -12,3 +12,7 @@ export interface Day {
   isSelected?: boolean; // Optional property isSelected
   events: Event[];
 }
+export interface Month {
+  name: string;
+  days: Day[];
+}

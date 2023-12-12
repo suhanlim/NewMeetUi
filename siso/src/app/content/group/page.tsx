@@ -6,8 +6,12 @@ export default function Page() {
   return (
     <Provider>
       <div className="flex flex-row gap-2">
-        <Chat />
-        <GroupCalendar />
+        <div className="flex-none">
+          <Chat />
+        </div>
+        <div className="flex-auto">
+          <GroupCalendar />
+        </div>
       </div>
     </Provider>
   );

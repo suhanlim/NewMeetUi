@@ -101,7 +101,7 @@ export function WeekView() {
                           },
                         )}
                       >
-                        {" " + dayjs().day(vIndex)["$D"]}
+                        {" " + dayjs().day(vIndex).date()}
                       </span>
                     </span>
                   </div>

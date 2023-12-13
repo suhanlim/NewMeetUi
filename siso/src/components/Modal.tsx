@@ -5,8 +5,13 @@ import {
   CheckIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { daysAtom, modalOpenedAtom, monthsAtom } from "@/app/Stores";
+import { useAtom, useAtomValue } from "jotai";
+import {
+  inputContent,
+  inputEndDateTimeAtom,
+  modalOpenedAtom,
+  monthsAtom,
+} from "@/app/Stores";
 import { DateInput } from "./DateInput";
 import { inputDateAtom, inputTextAtom } from "@/app/Stores";
 import { Event, Day } from "..";
@@ -19,6 +24,9 @@ export function Modal() {
   const cancelButtonRef = useRef(null);
   const textValue = useAtomValue(inputTextAtom);
   const dateValue = useAtomValue(inputDateAtom);
+  const endDateValue = useAtomValue(inputEndDateTimeAtom);
+  const contentValue = useAtomValue(inputContent);
+
   const curMonth = "December";
   const month = months.find(({ name }) => name === curMonth);
   const days = month!.days;
@@ -31,7 +39,7 @@ export function Modal() {
       id: idValue++,
       name: textValue,
       time: +dateValue.substring(tIndex + 1, tIndex + 3) + "PM",
-      datetime: dateValue,
+      startTime: dateValue,
       href: "#",
     };
     const dayIndex = days.findIndex(({ date }) => date === keyDate);
@@ -50,7 +58,12 @@ export function Modal() {
     }
   };
   const inputCheck = () => {
-    if (textValue != "" && dateValue != "") {
+    if (
+      textValue != "" &&
+      dateValue != "" &&
+      endDateValue != "" &&
+      contentValue != ""
+    ) {
       inputDate();
       setOpen(false);
       setInputResult(true);

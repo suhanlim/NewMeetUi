@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useAtomValue } from "jotai";
 import { monthsAtom } from "@/app/Stores";
+import dayjs from "dayjs";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -13,7 +14,7 @@ export function DayView() {
   const containerNav = useRef<HTMLDivElement>(null);
   const containerOffset = useRef<HTMLDivElement>(null);
   const months = useAtomValue(monthsAtom);
-  const curMonth = "December";
+  const curMonth = dayjs().format("MMMM");
   const month = months.find(({ name }) => name === curMonth);
   const days = month!.days;
 
@@ -269,7 +270,7 @@ export function DayView() {
                 >
                   <a
                     href="#"
-                    className="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-blue-50 p-2 text-xs leading-5 hover:bg-blue-100"
+                    className="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-blue-500/10 p-2 text-xs leading-5 hover:bg-blue-100"
                   >
                     <p className="order-1 font-semibold text-blue-700">
                       Breakfast

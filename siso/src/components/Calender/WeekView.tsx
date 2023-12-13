@@ -13,12 +13,10 @@ export function WeekView() {
   const containerNav = useRef<HTMLDivElement>(null);
   const containerOffset = useRef<HTMLDivElement>(null);
   const months = useAtomValue(monthsAtom);
-
-  const curMonth = "December";
+  const curMonth = dayjs().format("MMMM");
   const month = months.find(({ name }) => name === curMonth);
   const days = month!.days;
-  const selectedDay = days.find((day) => day.isSelected);
-
+  const dayShortString = dayjs().format("dddd").substring(0, 3);
   for (let i = 0; i < 7; i++) {
     const day = dayjs().day(i)["$D"];
     console.log(day);
@@ -30,7 +28,7 @@ export function WeekView() {
       return (
         <div key={v} className="flex items-center justify-center py-3">
           <span>
-            Sun{" "}
+            Sun
             <span className="items-center justify-center font-semibold text-gray-900">
               10
             </span>
@@ -93,7 +91,9 @@ export function WeekView() {
                     className="flex items-center justify-center py-3"
                   >
                     <span
-                      className={clsx({ "flex items-baseline": v === "Fri" })}
+                      className={clsx({
+                        "flex items-baseline": v === dayShortString,
+                      })}
                     >
                       {v}
                       <span
@@ -101,7 +101,7 @@ export function WeekView() {
                           "items-center justify-center font-semibold text-gray-900",
                           {
                             "ml-1.5 flex h-8 w-8 rounded-full bg-indigo-600 text-white":
-                              v === "Fri",
+                              v === dayShortString,
                           },
                         )}
                       >

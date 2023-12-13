@@ -9,7 +9,7 @@ import {
 import { Menu, Transition } from "@headlessui/react";
 import { Modal } from "./Modal";
 import { useAtom } from "jotai";
-import { daysAtom, modalOpenedAtom } from "@/app/Stores";
+import { modalOpenedAtom } from "@/app/Stores";
 import { MonthView } from "./Calender/MonthView";
 import { WeekView } from "./Calender/WeekView";
 import { DayView } from "./Calender/DayView";

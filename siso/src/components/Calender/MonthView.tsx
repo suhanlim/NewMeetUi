@@ -1,10 +1,11 @@
 import { useAtomValue } from "jotai";
 import { monthsAtom } from "@/app/Stores";
 import { ClockIcon } from "@heroicons/react/20/solid";
+import dayjs from "dayjs";
 
 export function MonthView() {
   const months = useAtomValue(monthsAtom);
-  const curMonth = "December";
+  const curMonth = dayjs().format("MMMM");
   const month = months.find(({ name }) => name === curMonth);
   const days = month!.days;
   const selectedDay = days.find((day) => day.isSelected);
@@ -69,7 +70,7 @@ export function MonthView() {
                             {event.name}
                           </p>
                           <time
-                            dateTime={event.datetime}
+                            dateTime={event.startTime}
                             className="ml-3 hidden flex-none text-gray-500 group-hover:text-indigo-600 xl:block"
                           >
                             {event.time}
@@ -147,7 +148,7 @@ export function MonthView() {
                 <div className="flex-auto">
                   <p className="font-semibold text-gray-900">{event.name}</p>
                   <time
-                    dateTime={event.datetime}
+                    dateTime={event.startTime}
                     className="mt-2 flex items-center text-gray-700"
                   >
                     <ClockIcon

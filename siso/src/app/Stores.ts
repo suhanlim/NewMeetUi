@@ -187,5 +187,5 @@ const months = Object.entries({
   return ret;
 });
 
-export const mouthsAtom = atom<Month[]>(months);
+export const monthsAtom = atom<Month[]>(months);
 export const daysAtom = atom<Day[]>(days);

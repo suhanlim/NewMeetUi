@@ -10,15 +10,28 @@ import { Menu, Transition } from "@headlessui/react";
 import { Modal } from "./Modal";
 import { useAtom } from "jotai";
 import { daysAtom, modalOpenedAtom } from "@/app/Stores";
-import { MouthView } from "./Calender/MouthView";
+import { MonthView } from "./Calender/MonthView";
 import { WeekView } from "./Calender/WeekView";
 import { DayView } from "./Calender/DayView";
 import { YearView } from "./Calender/YearView";
-import { Calendar } from "./Calendar";
+
+const CalenderSelectorName = (selectIndex: number) => {
+  switch (selectIndex) {
+    case 0:
+      return "Month view";
+    case 1:
+      return "Week view";
+    case 2:
+      return "Day view";
+    case 3:
+      return "Year view";
+  }
+};
+
 const CalenderSelector = (selectIndex: number) => {
   switch (selectIndex) {
     case 0:
-      return <MouthView />;
+      return <MonthView />;
     case 1:
       return <WeekView />;
     case 2:
@@ -73,7 +86,7 @@ export function GroupCalendar() {
                 type="button"
                 className="flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
               >
-                Month view
+                {CalenderSelectorName(selectIndex)}
                 <ChevronDownIcon
                   className="-mr-1 h-5 w-5 text-gray-400"
                   aria-hidden="true"

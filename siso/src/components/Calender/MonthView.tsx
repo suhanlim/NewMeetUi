@@ -1,9 +1,12 @@
 import { useAtomValue } from "jotai";
-import { daysAtom } from "@/app/Stores";
+import { monthsAtom } from "@/app/Stores";
 import { ClockIcon } from "@heroicons/react/20/solid";
 
-export function MouthView() {
-  const days = useAtomValue(daysAtom);
+export function MonthView() {
+  const months = useAtomValue(monthsAtom);
+  const curMonth = "December";
+  const month = months.find(({ name }) => name === curMonth);
+  const days = month!.days;
   const selectedDay = days.find((day) => day.isSelected);
 
   function classNames(...classes: string[]) {

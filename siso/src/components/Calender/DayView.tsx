@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useAtomValue } from "jotai";
-import { daysAtom } from "@/app/Stores";
+import { monthsAtom } from "@/app/Stores";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -12,7 +12,10 @@ export function DayView() {
   const container = useRef<HTMLDivElement>(null);
   const containerNav = useRef<HTMLDivElement>(null);
   const containerOffset = useRef<HTMLDivElement>(null);
-  const days = useAtomValue(daysAtom);
+  const months = useAtomValue(monthsAtom);
+  const curMonth = "December";
+  const month = months.find(({ name }) => name === curMonth);
+  const days = month!.days;
 
   useEffect(() => {
     // Set the container scroll position based on the current time.

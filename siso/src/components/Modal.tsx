@@ -6,18 +6,23 @@ import {
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { daysAtom, modalOpenedAtom } from "@/app/Stores";
+import { daysAtom, modalOpenedAtom, monthsAtom } from "@/app/Stores";
 import { DateInput } from "./DateInput";
 import { inputDateAtom, inputTextAtom } from "@/app/Stores";
 import { Event, Day } from "..";
 
 export function Modal() {
   const [open, setOpen] = useAtom(modalOpenedAtom);
-  const [days, setDays] = useAtom(daysAtom);
+  // const [days, setDays] = useAtom(daysAtom);
+  const [months, setMonths] = useAtom(monthsAtom);
   const [inputResult, setInputResult] = useState(true);
   const cancelButtonRef = useRef(null);
   const textValue = useAtomValue(inputTextAtom);
   const dateValue = useAtomValue(inputDateAtom);
+  const curMonth = "December";
+  const month = months.find(({ name }) => name === curMonth);
+  const days = month!.days;
+
   let idValue = 20;
   const inputDate = () => {
     const tIndex: number = dateValue.indexOf("T");
@@ -32,7 +37,7 @@ export function Modal() {
     const dayIndex = days.findIndex(({ date }) => date === keyDate);
     if (dayIndex !== -1) {
       days[dayIndex].events.push(event);
-      setDays(days);
+      setMonths(months);
     } else {
       const newDay: Day = {
         date: keyDate,

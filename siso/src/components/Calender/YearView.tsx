@@ -1,5 +1,5 @@
 "use client";
-import { daysAtom, mouthsAtom } from "@/app/Stores";
+import { monthsAtom } from "@/app/Stores";
 import { useAtomValue } from "jotai";
 
 function classNames(...classes: string[]) {
@@ -7,7 +7,7 @@ function classNames(...classes: string[]) {
 }
 
 export function YearView() {
-  const months = useAtomValue(mouthsAtom);
+  const months = useAtomValue(monthsAtom);
   console.log(months);
   return (
     <div>

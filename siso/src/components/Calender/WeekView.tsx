@@ -17,10 +17,6 @@ export function WeekView() {
   const month = months.find(({ name }) => name === curMonth);
   const days = month!.days;
   const dayShortString = dayjs().format("dddd").substring(0, 3);
-  for (let i = 0; i < 7; i++) {
-    const day = dayjs().day(i)["$D"];
-    console.log(day);
-  }
   const dayShortArray: string[] = ["S", "M", "T", "W", "T", "F", "S"];
   const dayArray: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const divMap = () => {

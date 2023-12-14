@@ -4,10 +4,6 @@ import { monthsAtom } from "@/app/Stores";
 import clsx from "clsx";
 import dayjs from "dayjs";
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export function WeekView() {
   const container = useRef<HTMLDivElement>(null);
   const containerNav = useRef<HTMLDivElement>(null);

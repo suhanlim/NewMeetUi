@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 
 const ScheduleSegment = (
   column: number,
+  name: string,
   startTime: dayjs.Dayjs,
   closeTime: dayjs.Dayjs,
   color: string,
@@ -22,9 +23,7 @@ const ScheduleSegment = (
         href="#"
         className={`group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-${color}-50 p-2 text-xs leading-5 hover:bg-${color}-100`}
       >
-        <p className={`order-1 font-semibold text-${color}-700`}>
-          Flight to Paris
-        </p>
+        <p className={`order-1 font-semibold text-${color}-700`}>{name}</p>
         <p className={`text-${color}-500 group-hover:text-${color}-700`}>
           <time dateTime="2022-01-12T07:30">
             {dayjs(startTime).format("HH:mm")}
@@ -44,14 +43,16 @@ export function WeekView() {
   const curMonth = dayjs().format("MMMM");
   const today = dayjs();
   // TODO: use selected chats indtead of hard-coded 'Me' object
-  const chats = useAtomValue(chatsAtom).find((v) => v.name === "Me");
+  const chats = useAtomValue(chatsAtom).find((v) => v.name === "Personal");
   const currentDays = chats?.months.find((v) => v.name === curMonth)?.days;
   const startIdx = currentDays?.findIndex(
     (v) => dayjs(v.date).date() === today.day(0).date(),
   );
   const weeksEvents = currentDays
-    ?.slice(startIdx, startIdx ?? 0 + 7)
+    ?.slice(startIdx, (startIdx ?? 0) + 7)
     .map((v) => v.events);
+
+  console.log(weeksEvents, startIdx, currentDays);
 
   const month = months.find(({ name }) => name === curMonth);
   const days = month!.days;
@@ -307,12 +308,19 @@ export function WeekView() {
               >
                 {weeksEvents?.flatMap((v, i) =>
                   v.map((val) => {
+                    console.log(val);
                     const hhmm = val.closeTime
                       .split(":")
                       .map((v) => parseInt(v));
                     const start = dayjs(val.startTime);
                     const end = start.hour(hhmm[0]).minute(hhmm[1]);
-                    return ScheduleSegment(i + 1, start, end, chats!.color);
+                    return ScheduleSegment(
+                      i + 1,
+                      val.name,
+                      start,
+                      end,
+                      chats!.color,
+                    );
                   }),
                 )}
               </ol>

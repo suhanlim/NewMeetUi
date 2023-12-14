@@ -26,13 +26,21 @@ export interface ChatUser {
   avatarImg: string;
 }
 
+export interface ChatMessag {
+  sentBy: string;
+  avatar: string;
+  message: string;
+  reaction?: string;
+}
+
 export interface Chat {
   color: string;
   name: string;
   months: Month[];
-  status?: string;
-  chatUser?: ChatUser;
-  latestMessage?: string;
+  status: string;
+  chatUser: ChatUser;
+  latestMessage: string;
+  chatMessages?: ChatMessag[];
 }
 
 export interface DataChunk {

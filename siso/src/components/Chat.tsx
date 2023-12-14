@@ -1,6 +1,6 @@
 "use client";
-import { selectChatName } from "@/app/Stores";
-import { useSetAtom } from "jotai";
+import { chatsAtom, selectChatName } from "@/app/Stores";
+import { useSetAtom, useAtom } from "jotai";
 import { useState, Fragment } from "react";
 import {
   MagnifyingGlassIcon,
@@ -9,8 +9,19 @@ import {
 import { Tab } from "@headlessui/react";
 
 export function Chat() {
-  const setSelectChatName = useSetAtom(selectChatName);
-  const [selectIndex, setSelectIndex] = useState(0);
+  const [selectUser, setSelectUser] = useAtom(selectChatName);
+  const [chats, setChats] = useAtom(chatsAtom);
+
+  const findChat = () => {
+    const index = chats.findIndex(
+      ({ chatUser }) => chatUser?.name === selectUser,
+    );
+    if (index !== -1) {
+      return chats[index];
+    }
+    return chats[0];
+  };
+
   return (
     <div>
       <div className="container mx-auto">
@@ -65,63 +76,69 @@ export function Chat() {
 
                 <hr className="border-hr dark:border-muted-1" />
                 <Tab.Panels className="flex-1 overflow-y-auto scrollbar scrollbar-thin bg-white">
-                  {chatLists.map((tab) => {
-                    const chatList = tab.chatDatas;
+                  {["Personal", "Group"].map((tab) => {
                     return (
-                      <Tab.Panel key={tab.type}>
+                      <Tab.Panel key={tab}>
                         <div className="p-0.5">
-                          {chatList.map((chat, index) => (
-                            <a
-                              key={index}
-                              href={chat.chatUser.href}
-                              className={`relative flex items-center space-x-2.5 px-6 py-4 hover:bg-layer-3 focus:z-20 focus:outline-none focus:ring-2 focus:ring-heading/80`}
-                            >
-                              <div className="flex-shrink-0">
-                                {chat.status === "active" ? (
-                                  <div className="relative inline-block">
-                                    <img
-                                      src={chat.chatUser.avatarImg}
-                                      alt="avatar"
-                                      className="inline-block h-10 w-10 rounded-full"
-                                    />
-                                    <svg
-                                      fill="currentColor"
-                                      viewBox="0 0 8 8"
-                                      className="absolute -top-0.5 -right-0.5 block h-3.5 w-3.5 rounded-full text-blue-500"
-                                    >
-                                      <circle cx={4} cy={4} r={3} />
-                                    </svg>
+                          {chats.map((chat, index) => {
+                            if (chat.name === tab) {
+                              return (
+                                <a
+                                  onClick={() =>
+                                    setSelectUser(chat.chatUser!.name)
+                                  }
+                                  key={index}
+                                  href={chat.chatUser!.href}
+                                  className={`relative flex items-center space-x-2.5 px-6 py-4 hover:bg-layer-3 focus:z-20 focus:outline-none focus:ring-2 focus:ring-heading/80`}
+                                >
+                                  <div className="flex-shrink-0">
+                                    {chat.status === "active" ? (
+                                      <div className="relative inline-block">
+                                        <img
+                                          src={chat.chatUser!.avatarImg}
+                                          alt="avatar"
+                                          className="inline-block h-10 w-10 rounded-full"
+                                        />
+                                        <svg
+                                          fill="currentColor"
+                                          viewBox="0 0 8 8"
+                                          className="absolute -top-0.5 -right-0.5 block h-3.5 w-3.5 rounded-full text-blue-500"
+                                        >
+                                          <circle cx={4} cy={4} r={3} />
+                                        </svg>
+                                      </div>
+                                    ) : (
+                                      <img
+                                        src={chat.chatUser!.avatarImg}
+                                        alt="avatar"
+                                        className="inline-block h-10 w-10 rounded-full"
+                                      />
+                                    )}
                                   </div>
-                                ) : (
-                                  <img
-                                    src={chat.chatUser.avatarImg}
-                                    alt="avatar"
-                                    className="inline-block h-10 w-10 rounded-full"
-                                  />
-                                )}
-                              </div>
-                              <div>
-                                <div className="flex items-center justify-between">
-                                  <h3 className="text-base font-semibold text-heading">
-                                    {chat.chatUser.name}
-                                  </h3>
-                                  <div className="flex items-center space-x-2">
-                                    <div>
-                                      <button
-                                        type="button"
-                                        className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none border-transparent bg-transparent p-2 font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
-                                      >
-                                        <EllipsisHorizontalIcon className="h-4 w-4" />
-                                      </button>
+                                  <div>
+                                    <div className="flex items-center justify-between">
+                                      <h3 className="text-base font-semibold text-heading">
+                                        {chat.chatUser!.name}
+                                      </h3>
+                                      <div className="flex items-center space-x-2">
+                                        <div>
+                                          <button
+                                            type="button"
+                                            className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none border-transparent bg-transparent p-2 font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
+                                          >
+                                            <EllipsisHorizontalIcon className="h-4 w-4" />
+                                          </button>
+                                        </div>
+                                      </div>
                                     </div>
+                                    <p className="text-sm font-medium text-text line-clamp-1">
+                                      {chat.latestMessage}
+                                    </p>
                                   </div>
-                                </div>
-                                <p className="text-sm font-medium text-text line-clamp-1">
-                                  {chat.latestMessage}
-                                </p>
-                              </div>
-                            </a>
-                          ))}
+                                </a>
+                              );
+                            }
+                          })}
                         </div>
                       </Tab.Panel>
                     );
@@ -196,7 +213,7 @@ export function Chat() {
               <div className="flex-1 overflow-auto bg-white">
                 {/* Content */}
                 <div className="mx-auto max-w-xl flex-1 space-y-6 py-4 sm:py-6">
-                  {chatMessages.map((message, index) => (
+                  {findChat().chatMessages!.map((message, index) => (
                     // Chat Bubble
                     <div
                       key={index}
@@ -305,86 +322,6 @@ export function Chat() {
     </div>
   );
 }
-
-interface ChatUser {
-  name: string;
-  href: string;
-  avatarImg: string;
-}
-interface ChatData {
-  status: string;
-  chatUser: ChatUser;
-  latestMessage: string;
-}
-interface DataChunk {
-  chatDatas: ChatData[];
-  type: string;
-}
-
-const chatLists: DataChunk[] = [
-  {
-    type: "personal",
-    chatDatas: [
-      {
-        status: "active",
-        chatUser: {
-          name: "Me",
-          href: "#",
-          avatarImg:
-            "https://darrenjameseeley.files.wordpress.com/2014/09/expendables3.jpeg",
-        },
-        latestMessage: "Yesterday is clear test I am making a new",
-      },
-      {
-        status: "none",
-        chatUser: {
-          name: "Friend 1",
-          href: "#",
-          avatarImg:
-            "https://www.famousbirthdays.com/headshots/russell-crowe-6.jpg",
-        },
-        latestMessage: "Hi everyone! Glad you could join! I am making a new",
-      },
-      {
-        status: "none",
-        chatUser: {
-          name: "Friend 2",
-          href: "#",
-          avatarImg:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGpYTzuO0zLW7yadaq4jpOz2SbsX90okb24Z9GtEvK6Z9x2zS5",
-        },
-        latestMessage:
-          "please call me we must have make new project as long as quicky",
-      },
-    ],
-  },
-
-  {
-    type: "group",
-    chatDatas: [
-      {
-        status: "active",
-        chatUser: {
-          name: "Group 1",
-          href: "#",
-          avatarImg:
-            "https://www.famousbirthdays.com/headshots/russell-crowe-6.jpg",
-        },
-        latestMessage: "Hi everyone! Glad you could join! I am making a new",
-      },
-      {
-        status: "none",
-        chatUser: {
-          name: "Group 2",
-          href: "#",
-          avatarImg:
-            "https://www.famousbirthdays.com/headshots/russell-crowe-6.jpg",
-        },
-        latestMessage: "Hi everyone! Glad you could join! I am making a new",
-      },
-    ],
-  },
-];
 
 const chatMessages = [
   {

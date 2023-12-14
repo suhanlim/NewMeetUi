@@ -7,10 +7,12 @@ import {
 } from "@heroicons/react/24/outline";
 import { useAtom, useAtomValue } from "jotai";
 import {
+  chatsAtom,
   inputContent,
   inputEndDateTimeAtom,
   modalOpenedAtom,
   monthsAtom,
+  selectChatName,
 } from "@/app/Stores";
 import { DateInput } from "./DateInput";
 import { inputDateAtom, inputTextAtom } from "@/app/Stores";
@@ -18,16 +20,28 @@ import { Event, Day } from "..";
 
 export function Modal() {
   const [open, setOpen] = useAtom(modalOpenedAtom);
-  const [months, setMonths] = useAtom(monthsAtom);
+  const [chats, setChats] = useAtom(chatsAtom);
   const [inputResult, setInputResult] = useState(true);
   const cancelButtonRef = useRef(null);
   const textValue = useAtomValue(inputTextAtom);
   const dateValue = useAtomValue(inputDateAtom);
   const endDateValue = useAtomValue(inputEndDateTimeAtom);
   const contentValue = useAtomValue(inputContent);
+  const selectUser = useAtomValue(selectChatName);
 
   const curMonth = "December";
-  const month = months.find(({ name }) => name === curMonth);
+  const findChat = () => {
+    const index = chats.findIndex(
+      ({ chatUser }) => chatUser?.name === selectUser,
+    );
+    if (index !== -1) {
+      return chats[index];
+    }
+    return chats[0];
+  };
+
+  const months = findChat();
+  const month = months.months.find(({ name }) => name === curMonth);
   const days = month!.days;
 
   let idValue = 20;
@@ -46,7 +60,7 @@ export function Modal() {
     const dayIndex = days.findIndex(({ date }) => date === keyDate);
     if (dayIndex !== -1) {
       days[dayIndex].events.push(event);
-      setMonths(months);
+      setChats(chats);
     } else {
       const newDay: Day = {
         date: keyDate,

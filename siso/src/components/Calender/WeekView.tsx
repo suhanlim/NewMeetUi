@@ -12,7 +12,7 @@ const ScheduleSegment = (
 ) => {
   const anchor =
     2 + startTime.hour() * 12 + Math.round((startTime.minute() * 12) / 60);
-  const span = closeTime.diff(startTime) / (1000 * 60 * 5);
+  const span = Math.round(closeTime.diff(startTime) / (1000 * 60 * 5));
   return (
     <li
       className={clsx("relative mt-px flex", `sm:col-start-${column}`)}

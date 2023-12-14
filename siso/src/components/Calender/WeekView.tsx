@@ -1,15 +1,58 @@
 import { useEffect, useRef } from "react";
 import { useAtomValue } from "jotai";
-import { monthsAtom } from "@/app/Stores";
+import { chatsAtom, monthsAtom } from "@/app/Stores";
 import clsx from "clsx";
 import dayjs from "dayjs";
+
+const ScheduleSegment = (
+  column: number,
+  startTime: dayjs.Dayjs,
+  closeTime: dayjs.Dayjs,
+  color: string,
+) => {
+  const anchor =
+    2 + startTime.hour() * 12 + Math.round((startTime.minute() * 12) / 60);
+  const span = closeTime.diff(startTime) / (1000 * 60 * 5);
+  return (
+    <li
+      className={clsx("relative mt-px flex", `sm:col-start-${column}`)}
+      style={{ gridRow: `${anchor} / span ${span}` }}
+    >
+      <a
+        href="#"
+        className={`group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-${color}-50 p-2 text-xs leading-5 hover:bg-${color}-100`}
+      >
+        <p className={`order-1 font-semibold text-${color}-700`}>
+          Flight to Paris
+        </p>
+        <p className={`text-${color}-500 group-hover:text-${color}-700`}>
+          <time dateTime="2022-01-12T07:30">
+            {dayjs(startTime).format("HH:mm")}
+          </time>
+        </p>
+      </a>
+    </li>
+  );
+};
 
 export function WeekView() {
   const container = useRef<HTMLDivElement>(null);
   const containerNav = useRef<HTMLDivElement>(null);
   const containerOffset = useRef<HTMLDivElement>(null);
   const months = useAtomValue(monthsAtom);
+
   const curMonth = dayjs().format("MMMM");
+  const today = dayjs();
+  // TODO: use selected chats indtead of hard-coded 'Me' object
+  const chats = useAtomValue(chatsAtom).find((v) => v.name === "Me");
+  const currentDays = chats?.months.find((v) => v.name === curMonth)?.days;
+  const startIdx = currentDays?.findIndex(
+    (v) => dayjs(v.date).date() === today.day(0).date(),
+  );
+  const weeksEvents = currentDays
+    ?.slice(startIdx, startIdx ?? 0 + 7)
+    .map((v) => v.events);
+
   const month = months.find(({ name }) => name === curMonth);
   const days = month!.days;
   const dayShortString = dayjs().format("dddd").substring(0, 3);
@@ -262,54 +305,16 @@ export function WeekView() {
                   gridTemplateRows: "1.75rem repeat(288, minmax(0, 1fr)) auto",
                 }}
               >
-                <li
-                  className="relative mt-px flex sm:col-start-3"
-                  style={{ gridRow: "74 / span 12" }}
-                >
-                  <a
-                    href="#"
-                    className="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-blue-50 p-2 text-xs leading-5 hover:bg-blue-100"
-                  >
-                    <p className="order-1 font-semibold text-blue-700">
-                      Breakfast
-                    </p>
-                    <p className="text-blue-500 group-hover:text-blue-700">
-                      <time dateTime="2022-01-12T06:00">6:00 AM</time>
-                    </p>
-                  </a>
-                </li>
-                <li
-                  className="relative mt-px flex sm:col-start-3"
-                  style={{ gridRow: "92 / span 30" }}
-                >
-                  <a
-                    href="#"
-                    className="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-pink-50 p-2 text-xs leading-5 hover:bg-pink-100"
-                  >
-                    <p className="order-1 font-semibold text-pink-700">
-                      Flight to Paris
-                    </p>
-                    <p className="text-pink-500 group-hover:text-pink-700">
-                      <time dateTime="2022-01-12T07:30">7:30 AM</time>
-                    </p>
-                  </a>
-                </li>
-                <li
-                  className="relative mt-px hidden sm:col-start-6 sm:flex"
-                  style={{ gridRow: "122 / span 24" }}
-                >
-                  <a
-                    href="#"
-                    className="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-gray-100 p-2 text-xs leading-5 hover:bg-gray-200"
-                  >
-                    <p className="order-1 font-semibold text-gray-700">
-                      Meeting with design team at Disney
-                    </p>
-                    <p className="text-gray-500 group-hover:text-gray-700">
-                      <time dateTime="2022-01-15T10:00">10:00 AM</time>
-                    </p>
-                  </a>
-                </li>
+                {weeksEvents?.flatMap((v, i) =>
+                  v.map((val) => {
+                    const hhmm = val.closeTime
+                      .split(":")
+                      .map((v) => parseInt(v));
+                    const start = dayjs(val.startTime);
+                    const end = start.hour(hhmm[0]).minute(hhmm[1]);
+                    return ScheduleSegment(i + 1, start, end, chats!.color);
+                  }),
+                )}
               </ol>
             </div>
           </div>

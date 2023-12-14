@@ -18,7 +18,6 @@ import { Event, Day } from "..";
 
 export function Modal() {
   const [open, setOpen] = useAtom(modalOpenedAtom);
-  // const [days, setDays] = useAtom(daysAtom);
   const [months, setMonths] = useAtom(monthsAtom);
   const [inputResult, setInputResult] = useState(true);
   const cancelButtonRef = useRef(null);

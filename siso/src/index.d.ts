@@ -30,9 +30,9 @@ export interface Chat {
   color: string;
   name: string;
   months: Month[];
-  status: string;
-  chatUser: ChatUser;
-  latestMessage: string;
+  status?: string;
+  chatUser?: ChatUser;
+  latestMessage?: string;
 }
 
 export interface DataChunk {

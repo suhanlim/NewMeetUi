@@ -372,6 +372,16 @@ const chatLists: DataChunk[] = [
         },
         latestMessage: "Hi everyone! Glad you could join! I am making a new",
       },
+      {
+        status: "none",
+        chatUser: {
+          name: "Group 2",
+          href: "#",
+          avatarImg:
+            "https://www.famousbirthdays.com/headshots/russell-crowe-6.jpg",
+        },
+        latestMessage: "Hi everyone! Glad you could join! I am making a new",
+      },
     ],
   },
 ];

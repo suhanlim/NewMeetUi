@@ -20,8 +20,22 @@ export interface Month {
   days: Day[];
 }
 
+export interface ChatUser {
+  name: string;
+  href: string;
+  avatarImg: string;
+}
+
 export interface Chat {
   color: string;
   name: string;
   months: Month[];
+  status: string;
+  chatUser: ChatUser;
+  latestMessage: string;
+}
+
+export interface DataChunk {
+  chatDatas: Chat[];
+  type: string;
 }

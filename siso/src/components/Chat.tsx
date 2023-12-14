@@ -1,110 +1,136 @@
+"use client";
+import { selectChatName } from "@/app/Stores";
+import { useSetAtom } from "jotai";
+import { useState, Fragment } from "react";
+import {
+  MagnifyingGlassIcon,
+  EllipsisHorizontalIcon,
+} from "@heroicons/react/24/outline";
+import { Tab } from "@headlessui/react";
+
 export function Chat() {
+  const setSelectChatName = useSetAtom(selectChatName);
+  const [selectIndex, setSelectIndex] = useState(0);
   return (
     <div>
       <div className="container mx-auto">
         <div className="h-screen">
           <div className="flex border border-grey rounded shadow-lg h-full">
-            <div className="w-1/3 border flex flex-col">
-              <div className="py-2 px-2 bg-sky-50 ">
-                <input
-                  type="text"
-                  className="w-full px-2 py-2 text-sm"
-                  placeholder="Search or start new chat"
-                />
+            <div className="w-2/5 border flex flex-col">
+              <div className="flex h-16 flex-shrink-0 items-center px-6">
+                <h3 className="text-lg font-semibold text-heading">Messages</h3>
               </div>
+              <div className="pb-4 px-4">
+                {" "}
+                <div>
+                  <label
+                    htmlFor="Search"
+                    className="sr-only block text-sm font-semibold text-heading"
+                  >
+                    Search
+                  </label>
+                  <div className="relative flex">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex flex-shrink-0 items-center pl-4 focus-within:z-20">
+                      <MagnifyingGlassIcon className="h-5 w-5 text-text" />
+                    </div>
+                    <input
+                      type="text"
+                      id="price"
+                      name="price"
+                      placeholder="Search"
+                      className="block w-full rounded-xl border-2 border-layer-3 bg-muted-1 px-4 py-2.5 pl-11 pr-14 font-semibold text-heading placeholder:text-text/50 focus:border-primary focus:outline-none focus:ring-0 sm:text-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <Tab.Group>
+                <Tab.List className="flex px-6 pb-4">
+                  {["Personal", "Group"].map((tab) => (
+                    <Tab key={tab} as={Fragment}>
+                      {({ selected }) => (
+                        <button
+                          className={`${
+                            selected
+                              ? "border-primary bg-blue-500 text-white shadow-sm hover:border-primary-accent hover:bg-primary-accent focus:ring-2 focus:ring-blue-400/80 focus:ring-offset-0 disabled:hover:border-primary disabled:hover:bg-primary disabled:hover:text-white dark:focus:ring-white/80"
+                              : "border-transparent bg-transparent text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:hover:bg-transparent disabled:hover:text-text"
+                          } inline-flex basis-full cursor-pointer items-center justify-center rounded-full border-2 px-2 py-1 text-sm font-semibold capitalize focus:outline-none disabled:opacity-30`}
+                        >
+                          {tab}
+                        </button>
+                      )}
+                    </Tab>
+                  ))}
+                </Tab.List>
 
-              <div className="bg-sky-100 flex-1 overflow-auto">
-                <div className="px-3 flex items-center bg-grey-light cursor-pointer">
-                  <div>
-                    <img
-                      className="h-12 w-12 rounded-full"
-                      src="https://darrenjameseeley.files.wordpress.com/2014/09/expendables3.jpeg"
-                    />
-                  </div>
-                  <div className="ml-4 flex-1 border-b border-grey-lighter py-4">
-                    <div className="flex items-bottom justify-between">
-                      <p className="text-grey-darkest">
-                        New Movie! Expendables 4
-                      </p>
-                      <p className="text-xs text-grey-darkest">12:45 pm</p>
-                    </div>
-                    <p className="text-grey-dark mt-1 text-sm">
-                      Get Andrés on this movie ASAP!
-                    </p>
-                  </div>
-                </div>
-                <div className="bg-white px-3 flex items-center hover:bg-sky-50 cursor-pointer">
-                  <div>
-                    <img
-                      className="h-12 w-12 rounded-full"
-                      src="https://www.biography.com/.image/t_share/MTE5NDg0MDU1MTIyMTE4MTU5/arnold-schwarzenegger-9476355-1-402.jpg"
-                    />
-                  </div>
-                  <div className="ml-4 flex-1 border-b border-grey-lighter py-4">
-                    <div className="flex items-bottom justify-between">
-                      <p className="text-grey-darkest">Arnold Schwarzenegger</p>
-                      <p className="text-xs text-grey-darkest">12:45 pm</p>
-                    </div>
-                    <p className="text-grey-dark mt-1 text-sm">
-                      I will be back
-                    </p>
-                  </div>
-                </div>
-                <div className="bg-white px-3 flex items-center hover:bg-sky-50 cursor-pointer">
-                  <div>
-                    <img
-                      className="h-12 w-12 rounded-full"
-                      src="https://www.famousbirthdays.com/headshots/russell-crowe-6.jpg"
-                    />
-                  </div>
-                  <div className="ml-4 flex-1 border-b border-grey-lighter py-4">
-                    <div className="flex items-bottom justify-between">
-                      <p className="text-grey-darkest">Russell Crowe</p>
-                      <p className="text-xs text-grey-darkest">12:45 pm</p>
-                    </div>
-                    <p className="text-grey-dark mt-1 text-sm">
-                      Hold the line!
-                    </p>
-                  </div>
-                </div>
-                <div className="bg-white px-3 flex items-center hover:bg-sky-50 cursor-pointer">
-                  <div>
-                    <img
-                      className="h-12 w-12 rounded-full"
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGpYTzuO0zLW7yadaq4jpOz2SbsX90okb24Z9GtEvK6Z9x2zS5"
-                    />
-                  </div>
-                  <div className="ml-4 flex-1 border-b border-grey-lighter py-4">
-                    <div className="flex items-bottom justify-between">
-                      <p className="text-grey-darkest">Tom Cruise</p>
-                      <p className="text-xs text-grey-darkest">12:45 pm</p>
-                    </div>
-                    <p className="text-grey-dark mt-1 text-sm">
-                      Show me the money!
-                    </p>
-                  </div>
-                </div>
-                <div className="bg-white px-3 flex items-center hover:bg-sky-50 cursor-pointer">
-                  <div>
-                    <img
-                      className="h-12 w-12 rounded-full"
-                      src="https://www.biography.com/.image/t_share/MTE5NTU2MzE2MjE4MTY0NzQ3/harrison-ford-9298701-1-sized.jpg"
-                    />
-                  </div>
-                  <div className="ml-4 flex-1 border-b border-grey-lighter py-4">
-                    <div className="flex items-bottom justify-between">
-                      <p className="text-grey-darkest">Harrison Ford</p>
-                      <p className="text-xs text-grey-darkest">12:45 pm</p>
-                    </div>
-                    <p className="text-grey-dark mt-1 text-sm">
-                      Tell Java I have the money
-                    </p>
-                  </div>
-                </div>
-              </div>
+                <hr className="border-hr dark:border-muted-1" />
+                <Tab.Panels className="flex-1 overflow-y-auto scrollbar scrollbar-thin bg-white">
+                  {chatLists.map((tab) => {
+                    const chatList = tab.chatDatas;
+                    return (
+                      <Tab.Panel key={tab.type}>
+                        <div className="p-0.5">
+                          {chatList.map((chat, index) => (
+                            <a
+                              key={index}
+                              href={chat.chatUser.href}
+                              className={`relative flex items-center space-x-2.5 px-6 py-4 hover:bg-layer-3 focus:z-20 focus:outline-none focus:ring-2 focus:ring-heading/80`}
+                            >
+                              <div className="flex-shrink-0">
+                                {chat.status === "active" ? (
+                                  <div className="relative inline-block">
+                                    <img
+                                      src={chat.chatUser.avatarImg}
+                                      alt="avatar"
+                                      className="inline-block h-10 w-10 rounded-full"
+                                    />
+                                    <svg
+                                      fill="currentColor"
+                                      viewBox="0 0 8 8"
+                                      className="absolute -top-0.5 -right-0.5 block h-3.5 w-3.5 rounded-full text-blue-500"
+                                    >
+                                      <circle cx={4} cy={4} r={3} />
+                                    </svg>
+                                  </div>
+                                ) : (
+                                  <img
+                                    src={chat.chatUser.avatarImg}
+                                    alt="avatar"
+                                    className="inline-block h-10 w-10 rounded-full"
+                                  />
+                                )}
+                              </div>
+                              <div>
+                                <div className="flex items-center justify-between">
+                                  <h3 className="text-base font-semibold text-heading">
+                                    {chat.chatUser.name}
+                                  </h3>
+                                  <div className="flex items-center space-x-2">
+                                    <div>
+                                      <button
+                                        type="button"
+                                        className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none border-transparent bg-transparent p-2 font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
+                                      >
+                                        <EllipsisHorizontalIcon className="h-4 w-4" />
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                                <p className="text-sm font-medium text-text line-clamp-1">
+                                  {chat.latestMessage}
+                                </p>
+                              </div>
+                            </a>
+                          ))}
+                        </div>
+                      </Tab.Panel>
+                    );
+                  })}
+                </Tab.Panels>
+              </Tab.Group>
             </div>
 
-            <div className="w-2/3 border flex flex-col">
+            <div className="w-3/5 border flex flex-col">
               <div className="py-2 px-3 bg-sky-50 flex flex-row justify-between items-center">
                 <div className="flex items-center">
                   <div>
@@ -114,15 +140,13 @@ export function Chat() {
                     />
                   </div>
                   <div className="ml-4">
-                    <p className="text-grey-darkest">
-                      New Movie! Expendables 4
-                    </p>
+                    <p className="text-grey-darkest">Me</p>
                     <p className="text-grey-darker text-xs mt-1">
-                      Andrés, Tom, Harrison, Arnold, Sylvester
+                      {/* Andrés, Tom, Harrison, Arnold, Sylvester */}
+                      {"Me"}
                     </p>
                   </div>
                 </div>
-
                 <div className="flex">
                   <div>
                     <svg
@@ -170,110 +194,64 @@ export function Chat() {
               </div>
 
               <div className="flex-1 overflow-auto bg-white">
-                <div className="py-2 px-3">
-                  <div className="flex justify-center mb-2">
-                    <div className="rounded py-2 px-4 bg-sky-100">
-                      <p className="text-sm uppercase">February 20, 2018</p>
+                {/* Content */}
+                <div className="mx-auto max-w-xl flex-1 space-y-6 py-4 sm:py-6">
+                  {chatMessages.map((message, index) => (
+                    // Chat Bubble
+                    <div
+                      key={index}
+                      className={`${
+                        message.sentBy === "me"
+                          ? "justify-end"
+                          : "justify-start"
+                      } flex`}
+                    >
+                      <div
+                        className={`${
+                          message.sentBy === "me" ? "flex-row-reverse" : ""
+                        } flex w-11/12`}
+                      >
+                        {message.sentBy === "me" ? null : (
+                          <>
+                            <img
+                              src={message.avatar}
+                              alt="avatar"
+                              className="inline-block h-10 w-10 rounded-full"
+                            />
+                            <div className="mr-4" />
+                          </>
+                        )}
+                        <div
+                          className={`${
+                            message.sentBy === "me"
+                              ? "rounded-tr-none bg-blue-600"
+                              : "rounded-tl-none bg-sky-200"
+                          } relative max-w-xl rounded-xl px-4 py-2`}
+                        >
+                          <span
+                            className={`${
+                              message.sentBy === "me"
+                                ? "text-white"
+                                : "text-heading"
+                            } text-sm font-medium`}
+                          >
+                            {message.message}
+                          </span>
+                          {message.reaction ? (
+                            <span
+                              className={`${
+                                message.sentBy === "me"
+                                  ? "left-0 -translate-x-5 bg-sky-200"
+                                  : "right-0 translate-x-5 bg-blue-600"
+                              } absolute top-0 flex h-8 w-8 -translate-y-3 transform items-center justify-center rounded-full p-2 text-xs`}
+                            >
+                              {message.reaction}
+                            </span>
+                          ) : null}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="flex justify-center mb-4">
-                    <div className="rounded py-2 px-4 bg-orange-300">
-                      <p className="text-xs">
-                        Messages to this chat and calls are now secured with
-                        end-to-end encryption. Tap for more info.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex mb-2">
-                    <div className="rounded py-2 px-3 bg-green-400">
-                      <p className="text-sm text-teal">Sylverter Stallone</p>
-                      <p className="text-sm mt-1">
-                        Hi everyone! Glad you could join! I am making a new
-                        movie.
-                      </p>
-                      <p className="text-right text-xs text-grey-dark mt-1">
-                        12:45 pm
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex mb-2">
-                    <div className="rounded py-2 px-3 bg-green-400">
-                      <p className="text-sm text-purple">Tom Cruise</p>
-                      <p className="text-sm mt-1">
-                        Hi all! I have one question for the movie
-                      </p>
-                      <p className="text-right text-xs text-grey-dark mt-1">
-                        12:45 pm
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex mb-2">
-                    <div className="rounded py-2 px-3 bg-green-400">
-                      <p className="text-sm text-orange">Harrison Ford</p>
-                      <p className="text-sm mt-1">Again?</p>
-                      <p className="text-right text-xs text-grey-dark mt-1">
-                        12:45 pm
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex mb-2">
-                    <div className="rounded py-2 px-3 bg-purple-500">
-                      <p className="text-sm text-orange">Russell Crowe</p>
-                      <p className="text-sm mt-1">
-                        Is Andrés coming for this one?
-                      </p>
-                      <p className="text-right text-xs text-grey-dark mt-1">
-                        12:45 pm
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex mb-2">
-                    <div className="rounded py-2 px-3 bg-purple-500">
-                      <p className="text-sm text-teal">Sylverter Stallone</p>
-                      <p className="text-sm mt-1">
-                        He is. Just invited him to join.
-                      </p>
-                      <p className="text-right text-xs text-grey-dark mt-1">
-                        12:45 pm
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end mb-2">
-                    <div className="rounded py-2 px-3 bg-red-400">
-                      <p className="text-sm mt-1">Hi guys.</p>
-                      <p className="text-right text-xs text-grey-dark mt-1">
-                        12:45 pm
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end mb-2">
-                    <div className="rounded py-2 px-3 bg-red-400">
-                      <p className="text-sm mt-1">Count me in</p>
-                      <p className="text-right text-xs text-grey-dark mt-1">
-                        12:45 pm
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex mb-2">
-                    <div className="rounded py-2 px-3 bg-purple-500">
-                      <p className="text-sm text-purple">Tom Cruise</p>
-                      <p className="text-sm mt-1">
-                        Get Andrés on this movie ASAP!
-                      </p>
-                      <p className="text-right text-xs text-grey-dark mt-1">
-                        12:45 pm
-                      </p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
 
@@ -327,3 +305,117 @@ export function Chat() {
     </div>
   );
 }
+
+interface ChatUser {
+  name: string;
+  href: string;
+  avatarImg: string;
+}
+interface ChatData {
+  status: string;
+  chatUser: ChatUser;
+  latestMessage: string;
+}
+interface DataChunk {
+  chatDatas: ChatData[];
+  type: string;
+}
+
+const chatLists: DataChunk[] = [
+  {
+    type: "personal",
+    chatDatas: [
+      {
+        status: "active",
+        chatUser: {
+          name: "Me",
+          href: "#",
+          avatarImg:
+            "https://darrenjameseeley.files.wordpress.com/2014/09/expendables3.jpeg",
+        },
+        latestMessage: "Yesterday is clear test I am making a new",
+      },
+      {
+        status: "none",
+        chatUser: {
+          name: "Friend 1",
+          href: "#",
+          avatarImg:
+            "https://www.famousbirthdays.com/headshots/russell-crowe-6.jpg",
+        },
+        latestMessage: "Hi everyone! Glad you could join! I am making a new",
+      },
+      {
+        status: "none",
+        chatUser: {
+          name: "Friend 2",
+          href: "#",
+          avatarImg:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGpYTzuO0zLW7yadaq4jpOz2SbsX90okb24Z9GtEvK6Z9x2zS5",
+        },
+        latestMessage:
+          "please call me we must have make new project as long as quicky",
+      },
+    ],
+  },
+
+  {
+    type: "group",
+    chatDatas: [
+      {
+        status: "active",
+        chatUser: {
+          name: "Group 1",
+          href: "#",
+          avatarImg:
+            "https://www.famousbirthdays.com/headshots/russell-crowe-6.jpg",
+        },
+        latestMessage: "Hi everyone! Glad you could join! I am making a new",
+      },
+    ],
+  },
+];
+
+const chatMessages = [
+  {
+    sentBy: "other",
+    avatar: "https://www.famousbirthdays.com/headshots/russell-crowe-6.jpg",
+    message:
+      "Hi Matthew, I've submitted my identification, just as you requested.",
+  },
+  {
+    sentBy: "me",
+    avatar: "/assets/avatars/matthew.png",
+    message:
+      "Perfect! Thank you, Nicholas! I will go ahead and approve your account for higher limits 🙌",
+    reaction: "🎉",
+  },
+  {
+    sentBy: "other",
+    avatar: "https://www.famousbirthdays.com/headshots/russell-crowe-6.jpg",
+    message: "Great! Thanks so much! 🙂",
+    reaction: "👍",
+  },
+  {
+    sentBy: "me",
+    avatar: "/assets/avatars/matthew.png",
+    message:
+      "Your account has been approved for our highest limits tier! We also reduced the taker fee to 0.01%!",
+  },
+  {
+    sentBy: "other",
+    avatar: "https://www.famousbirthdays.com/headshots/russell-crowe-6.jpg",
+    message: "That was fast! Thanks so much Matthew!",
+  },
+  {
+    sentBy: "me",
+    avatar: "/assets/avatars/matthew.png",
+    message:
+      "Sure thing! Let me know if there's anything else I can do for you.",
+  },
+  {
+    sentBy: "other",
+    avatar: "https://www.famousbirthdays.com/headshots/russell-crowe-6.jpg",
+    message: "Much appreciated.",
+  },
+];

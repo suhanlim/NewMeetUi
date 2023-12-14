@@ -19,21 +19,6 @@ export function WeekView() {
   const dayShortString = dayjs().format("dddd").substring(0, 3);
   const dayShortArray: string[] = ["S", "M", "T", "W", "T", "F", "S"];
   const dayArray: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const divMap = () => {
-    dayArray.map((v, vIndex) => {
-      return (
-        <div key={v} className="flex items-center justify-center py-3">
-          <span>
-            Sun
-            <span className="items-center justify-center font-semibold text-gray-900">
-              10
-            </span>
-          </span>
-        </div>
-      );
-    });
-  };
-  const buttonMap = () => {};
   useEffect(() => {
     // Set the container scroll position based on the current time.
     const currentMinute = new Date().getHours() * 60;

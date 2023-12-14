@@ -38,6 +38,8 @@ export function Modal() {
     const event: Event = {
       id: idValue++,
       name: textValue,
+      content: contentValue,
+      closeTime: endDateValue,
       time: +dateValue.substring(tIndex + 1, tIndex + 3) + "PM",
       startTime: dateValue,
       href: "#",

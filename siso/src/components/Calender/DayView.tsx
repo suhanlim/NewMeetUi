@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useAtomValue } from "jotai";
-import { monthsAtom } from "@/app/Stores";
+import { chatsAtom, monthsAtom } from "@/app/Stores";
 import dayjs from "dayjs";
 
 function classNames(...classes: string[]) {
@@ -13,6 +13,7 @@ export function DayView() {
   const container = useRef<HTMLDivElement>(null);
   const containerNav = useRef<HTMLDivElement>(null);
   const containerOffset = useRef<HTMLDivElement>(null);
+  const chats = useAtomValue(chatsAtom);
   const months = useAtomValue(monthsAtom);
   const curMonth = dayjs().format("MMMM");
   const month = months.find(({ name }) => name === curMonth);

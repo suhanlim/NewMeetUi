@@ -1,17 +1,47 @@
 "use client";
-import { Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Fragment, useState } from "react";
+import { Menu, Tab, Transition, Dialog, Disclosure } from "@headlessui/react";
 import Link from "next/link";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
+import {
+  XMarkIcon,
+  EllipsisHorizontalIcon,
+  MagnifyingGlassIcon,
+  Bars3Icon,
+  BellIcon,
+  UserIcon,
+  ChevronUpIcon,
+} from "@heroicons/react/24/outline";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
+const user = {
+  avatarImg: "/assets/avatars/nicholas-turner.png",
+  name: "Nicholas Turner",
+  email: "nicholas.turner@gmail.com",
+  location: "San Francisco, US",
+  href: "#",
+  isOnline: true,
+  basicInformation: {
+    bio: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Temporibus praesentium, ad quo quia consequuntur voluptatum, suscipit laboriosam qui fugit omnis et amet magni? Mollitia ducimus dolorum, asperiores perferendis quas facere!",
+    phone: "(555) 123-4567",
+    website: "nicholasturner.com",
+  },
+};
 
 export function Navbar() {
   const pathname = usePathname();
+  const [isUserDrawerOpen, setIsUserDrawerOpen] = useState(false);
+
+  function closeUserDrawer() {
+    setIsUserDrawerOpen(false);
+  }
+
+  function openUserDrawer() {
+    setIsUserDrawerOpen(true);
+  }
   return (
     <Disclosure as="nav" className="bg-white shadow">
       {({ open }) => (
@@ -86,7 +116,7 @@ export function Navbar() {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        src="https://darrenjameseeley.files.wordpress.com/2014/09/expendables3.jpeg"
                         alt=""
                       />
                     </Menu.Button>
@@ -105,6 +135,7 @@ export function Navbar() {
                         {({ active }) => (
                           <a
                             href="#"
+                            onClick={openUserDrawer}
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700",
@@ -146,6 +177,225 @@ export function Navbar() {
               </div>
             </div>
           </div>
+
+          {/* User Drawer */}
+          <Transition appear show={isUserDrawerOpen} as={Fragment}>
+            <Dialog as="div" onClose={closeUserDrawer}>
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <div className="fixed inset-0 bg-layer-1/60 transition-opacity" />
+              </Transition.Child>
+
+              <div className="fixed inset-0 flex justify-end">
+                <Transition.Child
+                  as={Fragment}
+                  enter="transform transition ease-in-out duration-500 sm:duration-700"
+                  enterFrom="translate-x-full"
+                  enterTo="translate-x-0"
+                  leave="transform transition ease-in-out duration-500 sm:duration-700"
+                  leaveFrom="translate-x-0"
+                  leaveTo="translate-x-full"
+                >
+                  <Dialog.Panel className="relative flex h-full w-screen max-w-sm flex-col bg-layer-2 shadow-2xl">
+                    <div className="flex h-16 flex-shrink-0 items-center justify-between px-6">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-lg font-semibold text-heading"
+                      >
+                        Visitor Information
+                      </Dialog.Title>
+
+                      <button
+                        type="button"
+                        onClick={closeUserDrawer}
+                        className="inline-flex cursor-pointer items-center justify-center rounded-xl border-none border-transparent bg-transparent p-2 font-semibold text-text hover:bg-heading/5 hover:text-heading focus:bg-heading/5 focus:outline-none focus:ring-2 focus:ring-heading/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text"
+                      >
+                        <span className="sr-only">Close</span>
+                        <XMarkIcon className="h-5 w-5" />
+                      </button>
+                    </div>
+
+                    <hr className="border-hr" />
+
+                    <div className="flex-1 px-6 py-5 sm:py-6">
+                      <div className="flex space-x-4">
+                        <img
+                          src="https://darrenjameseeley.files.wordpress.com/2014/09/expendables3.jpeg"
+                          alt="avatar"
+                          className="inline-block h-16 w-16 rounded-full"
+                        />
+                        <div>
+                          <div className="flex">
+                            <div className="relative">
+                              <h3 className="font-semibold text-heading">
+                                {"Me"}
+                              </h3>
+                              {true ? (
+                                <svg
+                                  fill="currentColor"
+                                  viewBox="0 0 8 8"
+                                  className="absolute -right-2.5 top-0 h-2 w-2 text-green-500"
+                                >
+                                  <circle cx={4} cy={4} r={3} />
+                                </svg>
+                              ) : null}
+                            </div>
+                          </div>
+                          <div className="mt-0.5 text-sm font-semibold text-heading">
+                            {"nicholas.turner@gmail.com"}
+                          </div>
+                          <div className="mt-1 text-xs font-semibold text-text">
+                            {"San Francisco, US"}
+                          </div>
+                        </div>
+                      </div>
+
+                      <a
+                        href="#"
+                        className="mt-8 inline-flex w-full cursor-pointer items-center justify-center rounded-xl border-2 border-primary bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:border-primary-accent hover:bg-primary-accent focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:border-primary disabled:hover:bg-primary disabled:hover:text-white dark:focus:ring-white/80"
+                      >
+                        <UserIcon className="mr-2 h-5 w-5" />
+                        Visitor Profile
+                      </a>
+
+                      <div className="mt-8 flex flex-col space-y-2">
+                        <Disclosure>
+                          {({ open }) => (
+                            <>
+                              <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-sm font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
+                                Basic Information
+                                <ChevronUpIcon
+                                  className={`${
+                                    open
+                                      ? "rotate-180 text-heading"
+                                      : "text-text"
+                                  } h-5 w-5`}
+                                />
+                              </Disclosure.Button>
+                              <Disclosure.Panel className="px-4 py-6 text-sm text-text">
+                                <dl className="space-y-6">
+                                  <div>
+                                    <dt className="text-sm text-heading">
+                                      Bio
+                                    </dt>
+                                    <dd className="mt-1 text-sm text-text">
+                                      {user.basicInformation.bio}
+                                    </dd>
+                                  </div>
+                                  <div>
+                                    <dt className="text-sm text-heading">
+                                      Phone
+                                    </dt>
+                                    <dd className="mt-1 text-sm text-text">
+                                      {user.basicInformation.phone}
+                                    </dd>
+                                  </div>
+                                  <div>
+                                    <dt className="text-sm text-heading">
+                                      Website
+                                    </dt>
+                                    <dd className="mt-1 text-sm text-text">
+                                      {user.basicInformation.website}
+                                    </dd>
+                                  </div>
+                                </dl>
+                              </Disclosure.Panel>
+                            </>
+                          )}
+                        </Disclosure>
+
+                        <Disclosure>
+                          {({ open }) => (
+                            <>
+                              <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-sm font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
+                                Assigned Operator
+                                <ChevronUpIcon
+                                  className={`${
+                                    open
+                                      ? "rotate-180 text-heading"
+                                      : "text-text"
+                                  } h-5 w-5`}
+                                />
+                              </Disclosure.Button>
+                              <Disclosure.Panel className="px-4 py-6 text-sm text-text">
+                                Lorem ipsum dolor sit amet consectetur
+                                adipisicing elit. Velit, facere nesciunt placeat
+                                est tempore excepturi eum quasi quibusdam
+                                voluptatibus qui!
+                              </Disclosure.Panel>
+                            </>
+                          )}
+                        </Disclosure>
+
+                        <Disclosure>
+                          {({ open }) => (
+                            <>
+                              <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-sm font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
+                                Data
+                                <ChevronUpIcon
+                                  className={`${
+                                    open
+                                      ? "rotate-180 text-heading"
+                                      : "text-text"
+                                  } h-5 w-5`}
+                                />
+                              </Disclosure.Button>
+                              <Disclosure.Panel className="px-4 py-6 text-sm text-text">
+                                Lorem ipsum dolor sit amet consectetur
+                                adipisicing elit. Velit, facere nesciunt placeat
+                                est tempore excepturi eum quasi quibusdam
+                                voluptatibus qui!
+                              </Disclosure.Panel>
+                            </>
+                          )}
+                        </Disclosure>
+
+                        <Disclosure>
+                          {({ open }) => (
+                            <>
+                              <Disclosure.Button className="relative flex w-full items-center justify-between rounded-lg border border-muted-1 bg-layer-2 px-4 py-2 text-sm font-semibold text-heading hover:bg-muted-1 focus:z-10 focus:outline-none focus:ring-2 focus:ring-heading/80 dark:border-0 dark:bg-layer-3">
+                                Last Profile Events
+                                <ChevronUpIcon
+                                  className={`${
+                                    open
+                                      ? "rotate-180 text-heading"
+                                      : "text-text"
+                                  } h-5 w-5`}
+                                />
+                              </Disclosure.Button>
+                              <Disclosure.Panel className="px-4 py-6 text-sm text-text">
+                                Lorem ipsum dolor sit amet consectetur
+                                adipisicing elit. Velit, facere nesciunt placeat
+                                est tempore excepturi eum quasi quibusdam
+                                voluptatibus qui!
+                              </Disclosure.Panel>
+                            </>
+                          )}
+                        </Disclosure>
+                      </div>
+                    </div>
+
+                    <div className="flex h-16 flex-shrink-0 items-center justify-center bg-layer-3 px-6 shadow-lg">
+                      <button
+                        type="button"
+                        onClick={closeUserDrawer}
+                        className="inline-flex cursor-pointer items-center justify-center rounded-xl border-2 border-critical bg-critical px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:border-critical-accent hover:bg-critical-accent focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:border-critical disabled:hover:bg-critical disabled:hover:text-white dark:focus:ring-white/80"
+                      >
+                        Block User
+                      </button>
+                    </div>
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
+            </Dialog>
+          </Transition>
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 pb-4 pt-2">

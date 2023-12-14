@@ -1,14 +1,6 @@
 export interface Event {
   id: number;
   name: string;
-  time: string;
-  startTime: string;
-  href: string;
-}
-
-export interface UpdateEvent {
-  id: number;
-  name: string;
   content: string;
   closeTime: string;
   time: string;

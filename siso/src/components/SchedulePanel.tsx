@@ -42,9 +42,6 @@ export function SchedulePanel() {
         <li className=" hover:bg-sky-700 font-bold text-white text-center overflow-hidden bg-sky-800 px-4 py-4 shadow sm:rounded-md sm:px-6">
           그룹 2 캘린더
         </li>
-        <li className="hover:bg-sky-700 font-bold text-white text-center overflow-hidden bg-sky-800 px-4 py-4 shadow sm:rounded-md sm:px-6">
-          그룹 3 캘린더
-        </li>
       </ul>
     </div>
   );

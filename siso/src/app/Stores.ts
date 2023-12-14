@@ -1,11 +1,12 @@
 import { atom } from "jotai";
-import { Day, Month } from "..";
+import { Day, Month, Chat } from "..";
 
 export const modalOpenedAtom = atom(false);
 export const inputTextAtom = atom("");
 export const inputDateAtom = atom("");
 export const inputEndDateTimeAtom = atom("");
 export const inputContent = atom("");
+export const selectChatName = atom("Me");
 
 function makeMonth(of: number) {
   const firstDate = new Date(2023, of - 1, 1);
@@ -69,4 +70,13 @@ const months = Object.entries({
   return ret;
 });
 
+const chats: Array<Chat> = [
+  { name: "Me", color: "blue", months: months },
+  { name: "Friend 1", color: "green", months: months },
+  { name: "Friend 2", color: "green", months: months },
+  { name: "Group 1", color: "indigo", months: months },
+  { name: "Group 2", color: "indigo", months: months },
+];
+
 export const monthsAtom = atom<Month[]>(months);
+export const chatsAtom = atom<Chat[]>(chats);

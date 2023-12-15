@@ -11,6 +11,11 @@ import { Tab } from "@headlessui/react";
 export function Chat() {
   const [selectUser, setSelectUser] = useAtom(selectChatName);
   const [chats, setChats] = useAtom(chatsAtom);
+  const [newChat, setNewChat] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewChat(e.target.value);
+  };
 
   const findChat = () => {
     const index = chats.findIndex(
@@ -291,10 +296,23 @@ export function Chat() {
                   <input
                     className="w-full border rounded px-2 py-2"
                     type="text"
+                    onChange={handleChange}
+                    value={newChat}
                   />
                 </div>
                 <div className="ml-2">
-                  <button className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
+                  <button
+                    onClick={() => {
+                      findChat().chatMessages?.push({
+                        sentBy: "me",
+                        avatar: "",
+                        message: newChat,
+                      });
+                      setSelectUser(selectUser);
+                      setNewChat("");
+                    }}
+                    className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
+                  >
                     <span>Send</span>
                     <span className="ml-2">
                       <svg
